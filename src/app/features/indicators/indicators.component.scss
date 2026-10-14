@@ -1,0 +1,145 @@
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.kpi {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 0 !important;
+  border-top: 4px solid var(--ic-blue);
+
+  &--up { border-top-color: var(--ic-green); }
+  &--down { border-top-color: var(--ic-orange); }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    font-size: 30px;
+    border-radius: 12px;
+    background: var(--ic-cyan-soft);
+    color: var(--ic-navy);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  &__label {
+    display: block;
+    font-size: 12px;
+    color: var(--ic-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  &__value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ic-navy);
+
+    &--small { font-size: 16px; line-height: 1.4; }
+  }
+
+  &__hint {
+    font-size: 13px;
+    color: var(--ic-text-muted);
+  }
+}
+
+.section-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: var(--ic-navy);
+}
+
+.chart {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 8px;
+  height: 260px;
+  padding: 24px 4px 4px;
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  &__value {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ic-navy);
+  }
+
+  &__track {
+    flex: 1;
+    width: 100%;
+    max-width: 44px;
+    display: flex;
+    align-items: flex-end;
+    background: #f1f5fa;
+    border-radius: 6px 6px 0 0;
+  }
+
+  &__bar {
+    width: 100%;
+    background: linear-gradient(180deg, var(--ic-cyan) 0%, var(--ic-blue) 100%);
+    border-radius: 6px 6px 0 0;
+    transition: height 0.4s ease;
+  }
+
+  &__label {
+    font-size: 12px;
+    color: var(--ic-text-muted);
+  }
+}
+
+table.compact {
+  width: 100%;
+}
+
+.num {
+  text-align: right !important;
+}
+
+.hbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &__fill {
+    height: 10px;
+    max-width: 240px;
+    border-radius: 5px;
+    background: var(--ic-cyan);
+  }
+
+  span {
+    font-weight: 600;
+  }
+}
+
+.note {
+  font-size: 12px;
+  color: var(--ic-text-muted);
+  margin: 8px 0 0;
+}
+
+@media (max-width: 900px) {
+  .kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .chart {
+    gap: 3px;
+
+    &__value { font-size: 9px; }
+  }
+}

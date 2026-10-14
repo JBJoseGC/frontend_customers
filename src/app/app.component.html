@@ -1,0 +1,25 @@
+<header class="ic-header">
+  <div class="ic-header__inner">
+    <div class="ic-brand">
+      <span class="ic-brand__mark">C</span>
+      <div>
+        <span class="ic-brand__title">Customers</span>
+        <span class="ic-brand__subtitle">Gestión de clientes</span>
+      </div>
+    </div>
+    <nav class="ic-nav">
+      <a routerLink="/clientes" routerLinkActive="active">
+        <mat-icon>groups</mat-icon><span>Clientes</span>
+      </a>
+      <a routerLink="/indicadores" routerLinkActive="active">
+        <mat-icon>insights</mat-icon><span>Indicadores</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main class="ic-main">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="ic-footer">© {{ year }} Customers · Reto Técnico Fullstack</footer>

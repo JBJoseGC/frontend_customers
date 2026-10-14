@@ -1,0 +1,23 @@
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ic-navy);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+  padding-top: 8px;
+
+  .full {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

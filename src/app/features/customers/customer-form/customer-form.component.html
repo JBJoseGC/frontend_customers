@@ -1,0 +1,71 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon>person_add</mat-icon> Nuevo cliente
+</h2>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-dialog-content>
+    @if (errorMessage) {
+      <div class="ic-alert-error">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <div class="grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="firstName" maxlength="100" cdkFocusInitial>
+        @if (form.controls.firstName.hasError('required')) {
+          <mat-error>El nombre es obligatorio</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="lastName" maxlength="100">
+        @if (form.controls.lastName.hasError('required')) {
+          <mat-error>El apellido es obligatorio</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>DNI</mat-label>
+        <input matInput formControlName="dni" maxlength="8" inputmode="numeric">
+        @if (form.controls.dni.hasError('required')) {
+          <mat-error>El DNI es obligatorio</mat-error>
+        } @else if (form.controls.dni.hasError('pattern')) {
+          <mat-error>El DNI debe tener 8 dígitos</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birthDate" [max]="maxDate" placeholder="dd/mm/aaaa">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+        @if (form.controls.birthDate.hasError('required')) {
+          <mat-error>La fecha de nacimiento es obligatoria</mat-error>
+        } @else if (form.controls.birthDate.hasError('matDatepickerMax')) {
+          <mat-error>No puede ser una fecha futura</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" maxlength="150">
+        @if (form.controls.email.hasError('required')) {
+          <mat-error>El email es obligatorio</mat-error>
+        } @else if (form.controls.email.hasError('email')) {
+          <mat-error>Formato de email inválido</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" (click)="cancel()" [disabled]="saving">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="saving">
+      <mat-icon>save</mat-icon> {{ saving ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </mat-dialog-actions>
+</form>

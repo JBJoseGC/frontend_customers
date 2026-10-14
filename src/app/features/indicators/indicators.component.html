@@ -1,0 +1,120 @@
+<div class="ic-page-header">
+  <div>
+    <h1>Indicadores</h1>
+    <p>Nacimientos de clientes por mes y año</p>
+  </div>
+  <button mat-stroked-button color="primary" (click)="load()" [disabled]="loading">
+    <mat-icon>refresh</mat-icon> Actualizar
+  </button>
+</div>
+
+@if (loading) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+@if (errorMessage) {
+  <div class="ic-alert-error">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ errorMessage }}</span>
+  </div>
+}
+
+@if (indicators; as ind) {
+  <section class="kpis">
+    <mat-card class="ic-card kpi">
+      <mat-icon class="kpi__icon">groups</mat-icon>
+      <div>
+        <span class="kpi__label">Total de clientes</span>
+        <span class="kpi__value">{{ ind.totalCustomers }}</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="ic-card kpi kpi--up">
+      <mat-icon class="kpi__icon">trending_up</mat-icon>
+      <div>
+        <span class="kpi__label">Mes/Año con mayor cantidad de nacidos</span>
+        @if (ind.highestBirthMonthYear.length) {
+          <span class="kpi__value">{{ periods(ind.highestBirthMonthYear) }}</span>
+          <span class="kpi__hint">{{ ind.highestBirthMonthYear[0].total }} cliente(s)</span>
+        } @else {
+          <span class="kpi__value">—</span>
+        }
+      </div>
+    </mat-card>
+
+    <mat-card class="ic-card kpi kpi--down">
+      <mat-icon class="kpi__icon">trending_down</mat-icon>
+      <div>
+        <span class="kpi__label">Mes/Año con menor cantidad de nacidos</span>
+        @if (ind.lowestBirthMonthYear.length) {
+          <span class="kpi__value kpi__value--small">{{ periods(ind.lowestBirthMonthYear) }}</span>
+          <span class="kpi__hint">{{ ind.lowestBirthMonthYear[0].total }} cliente(s)</span>
+        } @else {
+          <span class="kpi__value">—</span>
+        }
+      </div>
+    </mat-card>
+  </section>
+
+  <mat-card class="ic-card">
+    <h2 class="section-title">Tasa de natalidad por mes</h2>
+    <mat-tab-group mat-stretch-tabs="false" animationDuration="200ms">
+      <mat-tab label="Gráfico">
+        <div class="chart">
+          @for (r of ind.birthRateByMonth; track r.month) {
+            <div class="chart__col" [matTooltip]="r.monthName + ': ' + r.total + ' cliente(s) — ' + (r.rate | number: '1.2-2') + '%'">
+              <span class="chart__value">{{ r.rate | number: '1.0-1' }}%</span>
+              <div class="chart__track">
+                <div class="chart__bar" [style.height.%]="barHeight(r.rate)"></div>
+              </div>
+              <span class="chart__label">{{ r.monthName.substring(0, 3) }}</span>
+            </div>
+          }
+        </div>
+      </mat-tab>
+      <mat-tab label="Tabla">
+        <table mat-table [dataSource]="ind.birthRateByMonth" class="compact">
+          <ng-container matColumnDef="monthName">
+            <th mat-header-cell *matHeaderCellDef>Mes</th>
+            <td mat-cell *matCellDef="let r">{{ r.monthName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef class="num">Nacidos</th>
+            <td mat-cell *matCellDef="let r" class="num">{{ r.total }}</td>
+          </ng-container>
+          <ng-container matColumnDef="rate">
+            <th mat-header-cell *matHeaderCellDef class="num">Tasa (%)</th>
+            <td mat-cell *matCellDef="let r" class="num">{{ r.rate | number: '1.2-2' }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="rateColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: rateColumns"></tr>
+        </table>
+      </mat-tab>
+    </mat-tab-group>
+    <p class="note">Tasa = clientes nacidos en el mes / total de clientes × 100</p>
+  </mat-card>
+
+  <mat-card class="ic-card">
+    <h2 class="section-title">Cantidad de clientes nacidos por mes/año</h2>
+    <table mat-table [dataSource]="ind.birthsByMonthYear" class="compact">
+      <ng-container matColumnDef="period">
+        <th mat-header-cell *matHeaderCellDef>Mes / Año</th>
+        <td mat-cell *matCellDef="let r">{{ r.period }}</td>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef>Nacidos</th>
+        <td mat-cell *matCellDef="let r">
+          <div class="hbar">
+            <div class="hbar__fill" [style.width.%]="barWidth(r.total)"></div>
+            <span>{{ r.total }}</span>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="monthYearColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: monthYearColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="note" [attr.colspan]="monthYearColumns.length">Sin clientes registrados</td>
+      </tr>
+    </table>
+  </mat-card>
+}
