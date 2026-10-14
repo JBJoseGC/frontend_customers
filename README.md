@@ -1,6 +1,6 @@
 # frontend_customers
 
-Aplicación web **Customers** del Reto 004 – Senior Fullstack Developer.
+Aplicación web **Customers** del Reto 004.
 Consume el microservicio `backend_customers` para consultar, filtrar y registrar clientes, y mostrar indicadores de nacimientos.
 
 ## Stack
